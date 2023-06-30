@@ -16,7 +16,7 @@ install_github("Hung-Ching-Chang/LipidFete")
 ```
 
 ## Example
-#### 2D Lipid feature
+### 2D Lipid feature
 ```r
 library(LipidFete)
 data(lipid2D)
@@ -44,7 +44,7 @@ region.plot.2D(X.info = X.info,
 ```
 The warning message indicates the number of features with p-values greater than 0.1.
 
-#### 1D Lipid feature
+### 1D Lipid feature
 ```r
 library(LipidFete)
 data(lipid1D)
