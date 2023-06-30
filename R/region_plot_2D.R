@@ -60,7 +60,7 @@ region.plot.2D <- function(X.info, direction, smoothing.pval, marginal.pval,
 
   ## build wall
   wall <- lapply(seq_len(nrow(X.info)),
-                 function(x) build.wall(feature.idx = x, dist.input, selected.region, X.info))
+                 function(x) build.wall(feature.idx = x, X.info, selected.region, x.distance, y.distance))
   wall <- as.data.frame(do.call(rbind, wall))
   top.wall <- wall[wall$pos == "top", seq_len(2)]
   bottom.wall <- wall[wall$pos == "bottom", seq_len(2)]
@@ -90,12 +90,12 @@ region.plot.2D <- function(X.info, direction, smoothing.pval, marginal.pval,
     scale_x_continuous(breaks=x.label) +
     scale_y_continuous(breaks=y.label) +
     geom_segment(data=top.wall, aes(x=x-x.distance/2, xend=x+x.distance/2,
-                                    y=y+y.distance/2, yend=y+y.distance/2), size = 1)+
+                                    y=y+y.distance/2, yend=y+y.distance/2), linewidth = 1)+
     geom_segment(data=right.wall, aes(x=x+x.distance/2, xend=x+x.distance/2,
-                                      y=y-y.distance/2, yend=y+y.distance/2), size = 1) +
+                                      y=y-y.distance/2, yend=y+y.distance/2), linewidth = 1) +
     geom_segment(data=bottom.wall, aes(x=x-x.distance/2, xend=x+x.distance/2,
-                                       y=y-y.distance/2, yend=y-y.distance/2), size = 1)+
+                                       y=y-y.distance/2, yend=y-y.distance/2), linewidth = 1)+
     geom_segment(data=left.wall, aes(x=x-x.distance/2, xend=x-x.distance/2,
-                                     y=y-y.distance/2, yend=y+y.distance/2), size = 1)
+                                     y=y-y.distance/2, yend=y+y.distance/2), linewidth = 1)
   return(result)
 }
