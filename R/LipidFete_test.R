@@ -38,6 +38,7 @@
 #'                own.contri = 0.5,
 #'                x.distance = 2,
 #'                y.distance = 1,
+#'                dimension = 2,
 #'                permute.time = 100000)
 #'
 #' @author Hung-Ching Chang

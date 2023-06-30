@@ -28,6 +28,7 @@
 #'                               own.contri = 0.5,
 #'                               x.distance = 2,
 #'                               y.distance = 1,
+#'                               dimension = 1,
 #'                               permute.time = 100000)
 #'
 #' region.plot.1D(X = X,
