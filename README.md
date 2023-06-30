@@ -12,7 +12,7 @@
 LipidFete v1.0.0 is now available in github
 ```r
 library(devtools)
-install_github("HungChingChang/LipidFete")
+install_github("Hung-Ching-Chang/LipidFete")
 ```
 
 ## Example
