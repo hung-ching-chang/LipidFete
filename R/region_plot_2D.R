@@ -43,6 +43,7 @@
 #' @author Hung-Ching Chang
 #' @seealso \code{\link{LipidFete.test}, \link{build.wall}, \link{pval.annotation}}
 #' @export
+#' @import ggplot2
 region.plot.2D <- function(X.info, direction, smoothing.pval, marginal.pval,
                            log2.FC, cut.point = 0.05, x.distance = 1, y.distance = 1,
                            log2.FC.cut.point = 3, ...){

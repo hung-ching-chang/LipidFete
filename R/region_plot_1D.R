@@ -43,6 +43,7 @@
 #' @author Hung-Ching Chang
 #' @seealso \code{\link{region.stat}, \link{LipidFete.test}, \link{region.plot.2D}}
 #' @export
+#' @import ggplot2 cowplot
 region.plot.1D <- function(X, X.info, group, direction,
                            smoothing.pval, marginal.pval,
                            feature.name, cut.point = 0.05, ...){
