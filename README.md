@@ -31,7 +31,7 @@ test.result <- LipidFete.test(X = X,
                               x.distance = 2,
                               y.distance = 1,
                               dimension = 2,
-                              permute.time = 100000)
+                              permute.time = 10000)
 
 region.plot.2D(X.info = X.info,
                direction = test.result$direction,
@@ -58,7 +58,7 @@ test.result <- LipidFete.test(X = X,
                               x.distance = 2,
                               y.distance = 1,
                               dimension = 1,
-                              permute.time = 100000)
+                              permute.time = 10000)
 region.plot.1D(X = X,
                X.info = X.info,
                group = group,
