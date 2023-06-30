@@ -1,0 +1,27 @@
+Package: LipidFete
+Type: Package
+Title: Identification of the tendencies of lipid features
+Version: 1.0.0
+Authors@R: c(
+    person("Hung-Ching", "Chang", email = "rick.hcchang@gmail.com", role = c("aut","cre","cph")),
+    person("Wen-Jen", "Lin", role = c("aut")),
+    person("George C.", "Tseng", role = c("aut")),
+    person("Wei-Chung", "Cheng", role = c("aut")))
+Maintainer: Hung-Ching Chang <rick.hcchang@gmail.com>
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: false
+RoxygenNote: 7.2.3
+biocViews: Lipidomics, MultipleComparisons
+Description: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Imports: 
+    ggplot2,
+    cowplot
+Suggests: 
+    BiocStyle, 
+    knitr, 
+    rmarkdown
+VignetteBuilder: knitr
+URL: http://github.com/Hung-Ching-Chang/LipidFete
+Depends: 
+    R (>= 2.10)
