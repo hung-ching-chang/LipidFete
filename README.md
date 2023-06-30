@@ -30,6 +30,7 @@ test.result <- LipidFete.test(X = X,
                               own.contri = 0.5,
                               x.distance = 2,
                               y.distance = 1,
+                              dimension = 2,
                               permute.time = 100000)
 
 region.plot.2D(X.info = X.info,
@@ -56,7 +57,8 @@ test.result <- LipidFete.test(X = X,
                               own.contri = 0.5,
                               x.distance = 2,
                               y.distance = 1,
-                             permute.time = 100000)
+                              dimension = 1,
+                              permute.time = 100000)
 region.plot.1D(X = X,
                X.info = X.info,
                group = group,
