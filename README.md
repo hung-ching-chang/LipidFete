@@ -18,6 +18,8 @@ install_github("Hung-Ching-Chang/LipidFete")
 ## Example
 #### 2D Lipid feature
 ```r
+library(ggplot2)
+library(cowplot)
 library(LipidFete)
 data(lipid2D)
 X <- t(as.matrix(lipid2D[,-c(1:2)]))
@@ -45,6 +47,8 @@ region.plot.2D(X.info = X.info,
 
 #### 1D Lipid feature
 ```r
+library(ggplot2)
+library(cowplot)
 library(LipidFete)
 data(lipid1D)
 X <- t(as.matrix(lipid1D[,2:85]))
