@@ -75,6 +75,8 @@ region.plot.2D <- function(X.info, direction, smoothing.pval, marginal.pval,
 
   # heatmap
   heatmap.df <- as.data.frame(X.info)   # x- and y-axis
+  var.name <- colnames(heatmap.df)
+  colnames(heatmap.df) <- c("v1","v2")
   heatmap.df$log2.FC <- log2.FC    # color
   heatmap.df$log2.FC[log2.FC > log2.FC.cut.point] <- log2.FC.cut.point
   heatmap.df$log2.FC[log2.FC < -log2.FC.cut.point] <- -log2.FC.cut.point
@@ -83,13 +85,14 @@ region.plot.2D <- function(X.info, direction, smoothing.pval, marginal.pval,
   x.label <- seq(min(X.info[,1]), max(X.info[,1]), x.distance)
   y.label <- seq(min(X.info[,2]), max(X.info[,2]), y.distance)
 
-  result <- ggplot(heatmap.df, aes(x = totallength, y = totaldb))  +
+  result <- ggplot(heatmap.df, aes(x = v1, y = v2))  +
     geom_tile(aes(fill=log2.FC)) +
     scale_fill_gradient2(high="#F8766D",mid="white",low="blue", midpoint = 0) +
-    geom_text(aes(x = totallength, y = totaldb, label = pval.annotate),
+    geom_text(aes(x = v1, y = v2, label = pval.annotate),
               color = "black", size = 4) +
     scale_x_continuous(breaks=x.label) +
     scale_y_continuous(breaks=y.label) +
+    labs(x = var.name[1], y = var.name[2]) +
     geom_segment(data=top.wall, aes(x=x-x.distance/2, xend=x+x.distance/2,
                                     y=y+y.distance/2, yend=y+y.distance/2), linewidth = 1)+
     geom_segment(data=right.wall, aes(x=x+x.distance/2, xend=x+x.distance/2,
