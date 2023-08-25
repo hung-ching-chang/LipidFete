@@ -18,7 +18,7 @@
 #' @examples
 #' data(lipid1D)
 #' X <- t(as.matrix(lipid1D[,2:85]))
-#' X.info <- lipid1D[,1]
+#' X.info <- lipid1D[,1, drop = FALSE]
 #' group <- rep(c(0, 1), c(52,32))
 #' test.result <- LipidFete.test(X = X,
 #'                               X.info = X.info,
