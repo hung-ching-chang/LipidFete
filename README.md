@@ -49,7 +49,7 @@ The warning message indicates the number of features with p-values greater than 
 library(LipidFete)
 data(lipid1D)
 X <- t(as.matrix(lipid1D[,2:85]))
-X.info <- lipid1D[,1]
+X.info <- lipid1D[,1, drop = FALSE]
 group <- rep(c(0, 1), c(52,32))
 test.result <- LipidFete.test(X = X,
                               X.info = X.info,
@@ -66,7 +66,6 @@ region.plot.1D(X = X,
                direction = test.result$direction,
                smoothing.pval = test.result$smoothing.pval.BH,
                marginal.pval = test.result$marginal.pval.BH,
-               feature.name = colnames(X)[1],
                cut.point = 0.05)
 ```
 ## License
