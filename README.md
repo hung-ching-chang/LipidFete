@@ -42,7 +42,7 @@ region.plot.2D(X.info = X.info,
                x.distance = 2,
                y.distance = 1)
 ```
-The warning message indicates the number of features with p-values greater than 0.1.
+Please ignore the warning message, which indicates the number of features with p-values greater than 0.1.
 
 ### 1D Lipid feature
 ```r
