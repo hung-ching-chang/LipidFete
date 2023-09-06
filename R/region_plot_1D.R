@@ -4,12 +4,9 @@
 #'
 #' @param X A \code{matrix} of lipid expression data. Row is samples, and column is
 #' lipid feature such as double bond and chain length.
-#' @param X.info A \code{data.frame} or \code{matrix} of lipid feature names. (Only allow 1 or 2 columns)
+#' @param test.result Result from LipidFete.test function
 #' @param group A vector of observed grouping variable. (Only allow 0 and 1)
-#' @param direction A vector of direction of feature expression level
-#' @param smoothing.pval A vector of kernel smoothing p-value
-#' @param marginal.pval A vector of marginal p-value
-#' @param cut.point A cut point for smoothing.pval
+#' @param pval.thres A threshold for smoothing.pval
 #'
 #' @details write XXX
 #'
@@ -31,27 +28,30 @@
 #'                               permute.time = 100000)
 #'
 #' region.plot.1D(X = X,
-#'                X.info = X.info,
+#'                test.result = test.result,
 #'                group = group,
-#'                direction = test.result$direction,
-#'                smoothing.pval = test.result$smoothing.pval.BH,
-#'                marginal.pval = test.result$marginal.pval.BH,
-#'                cut.point = 0.05)
+#'                pval.thres = 0.05)
 #'
 #' @author Hung-Ching Chang
 #' @seealso \code{\link{region.stat}, \link{LipidFete.test}, \link{region.plot.2D}}
 #' @export
 #' @import ggplot2 cowplot
-region.plot.1D <- function(X, X.info, group, direction,
-                           smoothing.pval, marginal.pval,
-                           cut.point = 0.05, ...){
-  # selected region by cut point
+region.plot.1D <- function(X, test.result, group,
+                           pval.thres = 0.05, ...){
+  # input
+  X.info <- data.frame(test.result[,1])
+  colnames(X.info) <- colnames(test.result)[1]
+  direction <- test.result$direction
+  smoothing.pval <- test.result$smoothing.pval.BH
+  marginal.pval <- test.result$marginal.pval.BH
+
+  # selected region by threshold
   direction.int <- ifelse(direction == "+", 1, -1)
   category <- rep("None", length(smoothing.pval))
   signed.log.smoothing.pval <- direction.int * -log10(abs(smoothing.pval))
   signed.log.marginal.pval <- direction.int * -log10(marginal.pval)
-  category[signed.log.smoothing.pval > -log10(cut.point)] <- "High"
-  category[signed.log.smoothing.pval < log10(cut.point)] <- "Low"
+  category[signed.log.smoothing.pval > -log10(pval.thres)] <- "High"
+  category[signed.log.smoothing.pval < log10(pval.thres)] <- "Low"
   category <- factor(category,
                      levels = c("Low", "None", "High"))
 
