@@ -48,9 +48,9 @@ region.plot.2D <- function(test.result, pval.thres = 0.05, x.distance = 1, y.dis
 
   # selected region by cut point
   direction.int <- ifelse(direction == "+", 1, -1)
-  selected.region <- rep("None", length(smoothing.pval))
-  selected.region[smoothing.pval < pval.thres & direction.int > 0] <- "High"
-  selected.region[smoothing.pval < pval.thres & direction.int < 0] <- "Low"
+  selected.region.high <- selected.region.low <- rep("None", length(smoothing.pval))
+  selected.region.high[smoothing.pval < pval.thres & direction.int > 0] <- "High"
+  selected.region.low[smoothing.pval < pval.thres & direction.int < 0] <- "Low"
 
   ## plot border
   # divided total length by 2 if  only consider even length
@@ -58,15 +58,27 @@ region.plot.2D <- function(test.result, pval.thres = 0.05, x.distance = 1, y.dis
   dist.input[,1] <- dist.input[,1]/x.distance
   dist.input[,2] <- dist.input[,2]/y.distance
 
-  ## build wall
-  wall <- lapply(seq_len(nrow(X.info)),
-                 function(x) build.wall(feature.idx = x, X.info, selected.region, x.distance, y.distance))
-  wall <- as.data.frame(do.call(rbind, wall))
-  top.wall <- wall[wall$pos == "top", seq_len(2)]
-  bottom.wall <- wall[wall$pos == "bottom", seq_len(2)]
-  right.wall <- wall[wall$pos == "right", seq_len(2)]
-  left.wall <- wall[wall$pos == "left", seq_len(2)]
-  colnames(top.wall) <- colnames(bottom.wall) <- colnames(right.wall) <- colnames(left.wall) <- c("x","y")
+  ## build wall (high group)
+  wall.high <- lapply(seq_len(nrow(X.info)),
+                      function(x) build.wall(feature.idx = x, X.info, selected.region.high,
+                                             x.distance, y.distance))
+  wall.high <- as.data.frame(do.call(rbind, wall.high))
+  top.wall.high <- wall.high[wall.high$pos == "top", seq_len(2)]
+  bottom.wall.high <- wall.high[wall.high$pos == "bottom", seq_len(2)]
+  right.wall.high <- wall.high[wall.high$pos == "right", seq_len(2)]
+  left.wall.high <- wall.high[wall.high$pos == "left", seq_len(2)]
+  colnames(top.wall.high) <- colnames(bottom.wall.high) <- colnames(right.wall.high) <- colnames(left.wall.high) <- c("x","y")
+
+  ## build wall (low group)
+  wall.low <- lapply(seq_len(nrow(X.info)),
+                     function(x) build.wall(feature.idx = x, X.info, selected.region.low,
+                                            x.distance, y.distance))
+  wall.low <- as.data.frame(do.call(rbind, wall.low))
+  top.wall.low <- wall.low[wall.low$pos == "top", seq_len(2)]
+  bottom.wall.low <- wall.low[wall.low$pos == "bottom", seq_len(2)]
+  right.wall.low <- wall.low[wall.low$pos == "right", seq_len(2)]
+  left.wall.low <- wall.low[wall.low$pos == "left", seq_len(2)]
+  colnames(top.wall.low) <- colnames(bottom.wall.low) <- colnames(right.wall.low) <- colnames(left.wall.low) <- c("x","y")
 
   # p-value annotation
   pval.annotate <- sapply(marginal.pval,
@@ -93,14 +105,36 @@ region.plot.2D <- function(test.result, pval.thres = 0.05, x.distance = 1, y.dis
     scale_x_continuous(breaks=x.label) +
     scale_y_continuous(breaks=y.label) +
     labs(x = var.name[1], y = var.name[2]) +
-    scale_size(range = c(5, 10)) +
-    geom_segment(data=top.wall, aes(x=x-x.distance/2, xend=x+x.distance/2,
-                                    y=y+y.distance/2, yend=y+y.distance/2), linewidth = 1)+
-    geom_segment(data=right.wall, aes(x=x+x.distance/2, xend=x+x.distance/2,
-                                      y=y-y.distance/2, yend=y+y.distance/2), linewidth = 1) +
-    geom_segment(data=bottom.wall, aes(x=x-x.distance/2, xend=x+x.distance/2,
-                                       y=y-y.distance/2, yend=y-y.distance/2), linewidth = 1)+
-    geom_segment(data=left.wall, aes(x=x-x.distance/2, xend=x-x.distance/2,
-                                     y=y-y.distance/2, yend=y+y.distance/2), linewidth = 1)
+    scale_size(range = c(5, 10))
+
+  # add high group wall
+  result <-  result +
+    geom_segment(data=top.wall.high, aes(x=x-x.distance/2, xend=x+x.distance/2,
+                                         y=y+y.distance/2, yend=y+y.distance/2),
+                 linewidth = 1, colour = "red")+
+    geom_segment(data=right.wall.high, aes(x=x+x.distance/2, xend=x+x.distance/2,
+                                      y=y-y.distance/2, yend=y+y.distance/2),
+                 linewidth = 1, colour = "red") +
+    geom_segment(data=bottom.wall.high, aes(x=x-x.distance/2, xend=x+x.distance/2,
+                                       y=y-y.distance/2, yend=y-y.distance/2),
+                 linewidth = 1, colour = "red")+
+    geom_segment(data=left.wall.high, aes(x=x-x.distance/2, xend=x-x.distance/2,
+                                     y=y-y.distance/2, yend=y+y.distance/2),
+                 linewidth = 1, colour = "red")
+
+  # add low group wall
+  result <-  result +
+    geom_segment(data=top.wall.low, aes(x=x-x.distance/2, xend=x+x.distance/2,
+                                         y=y+y.distance/2, yend=y+y.distance/2),
+                 linewidth = 1, colour = "blue")+
+    geom_segment(data=right.wall.low, aes(x=x+x.distance/2, xend=x+x.distance/2,
+                                           y=y-y.distance/2, yend=y+y.distance/2),
+                 linewidth = 1, colour = "blue") +
+    geom_segment(data=bottom.wall.low, aes(x=x-x.distance/2, xend=x+x.distance/2,
+                                            y=y-y.distance/2, yend=y-y.distance/2),
+                 linewidth = 1, colour = "blue")+
+    geom_segment(data=left.wall.low, aes(x=x-x.distance/2, xend=x-x.distance/2,
+                                          y=y-y.distance/2, yend=y+y.distance/2),
+                 linewidth = 1, colour = "blue")
   return(result)
 }

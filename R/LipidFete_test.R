@@ -24,6 +24,7 @@
 #'     \item{avg.expr: }{average expression.}
 #'     \item{direction: }{the feature expression level in group 1 is higher (+) or lower (-).}
 #'     \item{smoothing.pval.BH: }{p-value of lipidomic features by permutation test with BH correction.}
+#'     \item{marginal.pval.BH: }{p-value of lipidomic features by t-test with BH correction.}
 #'     \item{log2.FC: }{log2-transformed fold change.}
 #' }
 #'
@@ -74,14 +75,16 @@ LipidFete.test <- function(X, X.info, group, radius = 3, own.contri = 0.5,
   exp.dist <- exp(-dist.mat^2*kernel.radius)
 
   ## smoothing statistics
-  smooth.stat <- exp.dist %*% region.stat.obs
+  log.X <- log(X+1)
+  avg.log.expr <- colMeans(log.X)
+  smooth.stat <- exp.dist %*% (region.stat.obs * avg.log.expr)
 
   ## step 4: permutation
   set.seed(seed)
   Y.permute <- sapply(seq_len(permute.time), function(x) sample(group, replace = F))
   region.stat.permute <- region.stat(X = X,
                                      Y = Y.permute)
-  smooth.stat.permute <- exp.dist %*% region.stat.permute
+  smooth.stat.permute <- exp.dist %*% (region.stat.permute * avg.log.expr)
 
   ## p-value calculation
   smooth.stat.all <- cbind(smooth.stat, smooth.stat.permute)
@@ -90,14 +93,13 @@ LipidFete.test <- function(X, X.info, group, radius = 3, own.contri = 0.5,
   smooth.stat.pval.BH <- p.adjust(smooth.stat.pval, method = "BH")
 
   # other info for visualization
-  avg.expr <- round(colMeans(X), 2)
   direction <- ifelse(sign(smooth.stat) > 0, "+", "-")
   marginal.pval <- 10^-abs(region.stat.obs)
   marginal.pval.BH <- p.adjust(marginal.pval, method = "BH")
   log2.FC <- apply(X, 2,
                    function(x) log2(mean(x[group == 1])/mean(x[group == 0])))
   output.df <- data.frame(X.info,
-                          avg.expr = avg.expr,
+                          avg.expr = round(colMeans(X), 2),
                           direction = direction,
                           smoothing.pval.BH = smooth.stat.pval.BH,
                           marginal.pval.BH = marginal.pval.BH,
